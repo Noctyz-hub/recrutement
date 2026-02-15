@@ -342,10 +342,9 @@ async function sendToDiscordWebhook(submission) {
     
     // Créer l'embed Discord
     const embed = {
-        title: "🚨 NOUVELLE CANDIDATURE LSPD",
+        title: "🚨 NOUVELLE CANDIDATURE Police Nationale",
         color: 3447003, // Bleu
-        thumbnail: {
-            url: "https://i.imgur.com/AfFp7pu.png" // Logo LSPD (optionnel)
+         
         },
         fields: [
             {
@@ -379,7 +378,7 @@ async function sendToDiscordWebhook(submission) {
                 inline: true
             },
             {
-                name: "❤️ Pourquoi le LSPD ?",
+                name: "❤️ Pourquoi la Police Nationale ?",
                 value: data.motivation1 ? (data.motivation1.substring(0, 1000) + (data.motivation1.length > 1000 ? '...' : '')) : 'Non renseigné',
                 inline: false
             },
@@ -390,7 +389,7 @@ async function sendToDiscordWebhook(submission) {
             }
         ],
         footer: {
-            text: "Système de Recrutement LSPD"
+            text: "Système de Recrutement Police Nationale"
         },
         timestamp: submission.timestamp
     };
@@ -403,7 +402,7 @@ async function sendToDiscordWebhook(submission) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: "LSPD Recrutement",
+                username: "Police Nationale Recrutement",
                 avatar_url: "https://i.imgur.com/AfFp7pu.png", // Logo LSPD (optionnel)
                 embeds: [embed]
             })

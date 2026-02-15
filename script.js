@@ -3,7 +3,7 @@ let currentUser = null;
 let formData = {};
 
 // Configuration Discord OAuth (à remplacer par vos vraies valeurs)
-const DISCORD_CLIENT_ID = '1101858289693769758';
+const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
 const DISCORD_REDIRECT_URI = window.location.origin;
 const WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL'; // Pour recevoir les candidatures
 
@@ -41,6 +41,11 @@ document.getElementById('discordLoginBtn')?.addEventListener('click', () => {
     
     // Pour la démo, on simule une connexion
     simulateDiscordAuth();
+});
+
+// Bouton accès admin
+document.getElementById('adminAccessBtn')?.addEventListener('click', () => {
+    window.location.href = 'admin-login.html';
 });
 
 function simulateDiscordAuth(code = null) {

@@ -76,7 +76,46 @@ body {
     margin-bottom: 32px;
 }
 
+#discordForm {
+    margin-bottom: 24px;
+}
+
+#discordForm .form-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+#discordForm .form-group label {
+    display: block;
+    color: #e8eaed;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+#discordForm .form-input {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+#discordForm .form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#discordForm .form-input::placeholder {
+    color: #64748b;
+}
+
 .discord-btn {
+    width: 100%;
     background: #5865F2;
     color: white;
     border: none;
@@ -85,9 +124,6 @@ body {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
     transition: all 0.2s;
     box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
 }

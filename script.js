@@ -34,25 +34,36 @@ function checkAuth() {
     }
 }
 
-// Connexion Discord (simulation)
-document.getElementById('discordLoginBtn')?.addEventListener('click', () => {
-    // Dans un vrai projet, rediriger vers Discord OAuth
-    // window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${DISCORD_REDIRECT_URI}&response_type=code&scope=identify`;
-    
-    // Pour la démo, on simule une connexion
-    simulateDiscordAuth();
-});
+// Connexion Discord (formulaire)
+const discordForm = document.getElementById('discordForm');
+if (discordForm) {
+    discordForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const pseudo = document.getElementById('discordPseudoInput').value.trim();
+        
+        if (!pseudo) {
+            alert('Veuillez renseigner votre pseudo Discord');
+            return;
+        }
+        
+        // Créer un ID unique basé sur le pseudo
+        const generatedId = 'user_' + Date.now();
+        
+        simulateDiscordAuth(pseudo, generatedId);
+    });
+}
 
 // Bouton accès admin
 document.getElementById('adminAccessBtn')?.addEventListener('click', () => {
     window.location.href = 'admin-login.html';
 });
 
-function simulateDiscordAuth(code = null) {
+function simulateDiscordAuth(username = 'Utilisateur', userId = null) {
     // Simulation d'une connexion Discord
     currentUser = {
-        id: '1101858289693769758',
-        username: 'nocty2605',
+        id: userId || 'user_' + Date.now(),
+        username: username,
         discriminator: '0',
         avatar: null
     };

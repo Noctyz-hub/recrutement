@@ -5,7 +5,7 @@ let formData = {};
 // Configuration Discord OAuth (à remplacer par vos vraies valeurs)
 const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
 const DISCORD_REDIRECT_URI = window.location.origin;
-const WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL'; // Pour recevoir les candidatures
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u'; // Pour recevoir les candidatures
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
@@ -193,6 +193,8 @@ function setupFileUpload(inputId, previewId) {
 }
 
 function handleFile(file, inputId, preview) {
+    console.log('Upload fichier:', file.name, 'Type:', file.type, 'Taille:', file.size);
+    
     // Vérifier le type
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!validTypes.includes(file.type)) {
@@ -209,10 +211,27 @@ function handleFile(file, inputId, preview) {
     // Lire le fichier
     const reader = new FileReader();
     reader.onload = (e) => {
-        formData[inputId] = e.target.result;
+        const imageData = e.target.result;
+        
+        // Vérifier que les données sont valides
+        if (!imageData || !imageData.startsWith('data:image')) {
+            console.error('Données image invalides');
+            alert('Erreur lors de la lecture du fichier');
+            return;
+        }
+        
+        formData[inputId] = imageData;
+        console.log(`Image ${inputId} sauvegardée, taille:`, imageData.length, 'caractères');
+        
         preview.innerHTML = `✓ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
         preview.style.color = '#10b981';
     };
+    
+    reader.onerror = (error) => {
+        console.error('Erreur de lecture du fichier:', error);
+        alert('Erreur lors de la lecture du fichier');
+    };
+    
     reader.readAsDataURL(file);
 }
 
@@ -447,9 +466,27 @@ async function submitForm() {
 
 // Sauvegarder la candidature localement
 function saveSubmission(submission) {
+    console.log('=== SAUVEGARDE CANDIDATURE ===');
+    console.log('Carte identité présente:', !!submission.formData.carteIdentite);
+    console.log('Permis présent:', !!submission.formData.permisConduire);
+    
+    if (submission.formData.carteIdentite) {
+        console.log('Taille carte identité:', submission.formData.carteIdentite.length, 'caractères');
+    }
+    if (submission.formData.permisConduire) {
+        console.log('Taille permis:', submission.formData.permisConduire.length, 'caractères');
+    }
+    
     let submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
     submissions.push(submission);
-    localStorage.setItem('submissions', JSON.stringify(submissions));
+    
+    try {
+        localStorage.setItem('submissions', JSON.stringify(submissions));
+        console.log('✅ Candidature sauvegardée avec succès');
+    } catch (error) {
+        console.error('❌ Erreur de sauvegarde:', error);
+        alert('Erreur: Les fichiers sont peut-être trop volumineux pour être sauvegardés localement.');
+    }
 }
 
 // Envoyer au webhook Discord

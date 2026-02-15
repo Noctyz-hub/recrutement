@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recrutements - Los Santos Police Department</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Page de connexion Discord -->
+        <div id="loginPage" class="page active">
+            <div class="shield-logo">🛡️</div>
+            <h1>Recrutements - Los Santos Police Department</h1>
+            <div class="login-box">
+                <h2>Connexion requise</h2>
+                <p>Veuillez vous connecter avec Discord pour continuer</p>
+                <button id="discordLoginBtn" class="discord-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    Se connecter avec Discord
+                </button>
+            </div>
+        </div>
+
+        <!-- Page 1: Informations -->
+        <div id="page1" class="page">
+            <div class="progress-bar">
+                <div class="step active">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon info">ℹ️</div>
+                <h2>Informations Importantes</h2>
+                <p class="subtitle">Lisez attentivement les conditions d'admission</p>
+
+                <div class="info-box welcome">
+                    <h3>🛡️ Bienvenue dans le processus de recrutement du LSPD</h3>
+                    <p>Ce document est à remplir par tous les citoyens voulant rejoindre les rangs du Los Santos Police Department pour protéger et servir nos chers citoyens de cette ville.</p>
+                    <p>Pour chaque candidature envoyée, une réponse vous sera donnée sous 48 heures maximum. Seules les candidatures les plus pertinentes et les plus sérieuses seront retenues. Nous recherchons des agents matures, responsables et autonomes.</p>
+                </div>
+
+                <div class="info-box requirements">
+                    <h3>⚠️ Conditions d'admission obligatoires</h3>
+                    <ul>
+                        <li>✓ Avoir minimum 16 ans IRL</li>
+                        <li>✓ Avoir un casier judiciaire vierge</li>
+                        <li>✓ Avoir minimum 21 ans en ville</li>
+                        <li>✓ Être mature, responsable, motivé et autonome</li>
+                        <li>✓ Ne jamais avoir intégré une organisation</li>
+                        <li>✓ Être présent en ville depuis minimum 2 semaines</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="logout()">← Déconnexion</button>
+                    <button class="btn-primary" onclick="nextPage(2)">Continuer →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: HRP -->
+        <div id="page2" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">👤</div>
+                <h2>Renseignements (HRP)</h2>
+                <p class="subtitle">Vos informations personnelles hors roleplay</p>
+
+                <div class="form-group">
+                    <label>Date de naissance</label>
+                    <input type="date" id="dateNaissance" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Âge</label>
+                    <input type="number" id="age" class="form-input" readonly>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Identifiant Discord</label>
+                        <input type="text" id="discordId" class="form-input" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pseudo Discord</label>
+                        <input type="text" id="discordPseudo" class="form-input" readonly>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(1)">← Précédent</button>
+                    <button class="btn-primary" onclick="nextPage(3)">Suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: RP -->
+        <div id="page3" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🎮</div>
+                <h2>Renseignements (RP)</h2>
+                <p class="subtitle">Informations de votre personnage en roleplay</p>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" id="nomRP" class="form-input" placeholder="Nom RP">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" id="prenomRP" class="form-input" placeholder="Prénom RP">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Date de naissance</label>
+                    <input type="date" id="dateNaissanceRP" class="form-input">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Lieu de naissance</label>
+                        <input type="text" id="lieuNaissance" class="form-input" placeholder="Lieu de naissance">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nationalité</label>
+                        <input type="text" id="nationalite" class="form-input" placeholder="Nationalité">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Sexe</label>
+                        <select id="sexe" class="form-input">
+                            <option value="">Sélectionner</option>
+                            <option value="Homme">Homme</option>
+                            <option value="Femme">Femme</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Taille (cm)</label>
+                        <input type="number" id="taille" class="form-input" placeholder="Taille">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Poids (kg)</label>
+                        <input type="number" id="poids" class="form-input" placeholder="Poids">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Statut</label>
+                    <select id="statut" class="form-input">
+                        <option value="">Sélectionner votre statut</option>
+                        <option value="Célibataire">Célibataire</option>
+                        <option value="En couple">En couple</option>
+                        <option value="Marié(e)">Marié(e)</option>
+                        <option value="Divorcé(e)">Divorcé(e)</option>
+                    </select>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(2)">← Précédent</button>
+                    <button class="btn-primary" onclick="nextPage(4)">Suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Profession -->
+        <div id="page4" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">💼</div>
+                <h2>Renseignements Professionnels</h2>
+                <p class="subtitle">Votre situation professionnelle actuelle</p>
+
+                <div class="form-group">
+                    <label>Avez-vous un emploi actuellement ?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="emploi" value="Oui">
+                            <span>Oui</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="emploi" value="Non">
+                            <span>Non</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(3)">← Précédent</button>
+                    <button class="btn-primary" onclick="nextPage(5)">Suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Motivations -->
+        <div id="page5" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">❤️</div>
+                <h2>Motivations</h2>
+                <p class="subtitle">Exprimez votre motivation à rejoindre le LSPD</p>
+
+                <div class="alert warning">
+                    💡 Cette section nécessite des réponses développées et réfléchies
+                </div>
+
+                <div class="form-group">
+                    <label>Pourquoi voulez-vous rejoindre les rangs du LSPD ?</label>
+                    <textarea id="motivation1" class="form-textarea" rows="6" placeholder="Décrivez vos motivations pour intégrer la police de Los Santos..." minlength="150"></textarea>
+                    <div class="char-counter">0/150 caractères minimum</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Pourquoi vous et pas un autre ?</label>
+                    <textarea id="motivation2" class="form-textarea" rows="6" placeholder="Mettez en avant vos qualités et ce qui vous différencie..." minlength="150"></textarea>
+                    <div class="char-counter">0/150 caractères minimum</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Avez-vous déjà été agent de police ?</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="ancienAgent" value="Oui">
+                            <span>Oui</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="ancienAgent" value="Non">
+                            <span>Non</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Avez-vous de l'expérience dans les tâches administratives ou la relation humaine ?</label>
+                    <textarea id="experience" class="form-textarea" rows="4" placeholder="Décrivez votre expérience professionnelle ou personnelle pertinente..."></textarea>
+                    <div class="char-counter-small">Veuillez compléter ce champ</div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(4)">← Précédent</button>
+                    <button class="btn-primary" onclick="nextPage(6)">Suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Documents -->
+        <div id="page6" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">📄</div>
+                <h2>Documents</h2>
+                <p class="subtitle">Uploadez vos documents officiels</p>
+
+                <div class="upload-grid">
+                    <div class="upload-box">
+                        <div class="upload-icon">🪪</div>
+                        <h3>Carte d'identité</h3>
+                        <input type="file" id="carteIdentite" accept=".jpg,.jpeg,.png,.webp" style="display:none">
+                        <label for="carteIdentite" class="btn-upload">📁 Parcourir les fichiers</label>
+                        <p class="upload-hint">Ou cliquez dans la zone et utilisez Ctrl+V pour coller</p>
+                        <div id="carteIdentitePreview" class="file-preview"></div>
+                    </div>
+
+                    <div class="upload-box">
+                        <div class="upload-icon">🚗</div>
+                        <h3>Permis de conduire</h3>
+                        <input type="file" id="permisConduire" accept=".jpg,.jpeg,.png,.webp" style="display:none">
+                        <label for="permisConduire" class="btn-upload">📁 Parcourir les fichiers</label>
+                        <p class="upload-hint">Ou cliquez dans la zone et utilisez Ctrl+V pour coller</p>
+                        <div id="permisConduirePreview" class="file-preview"></div>
+                    </div>
+                </div>
+
+                <div class="alert info">
+                    <strong>ℹ️ Formats acceptés :</strong><br>
+                    JPG, PNG, WebP - Taille maximale : 5MB<br>
+                    Assurez-vous que vos documents sont lisibles et de bonne qualité
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(5)">← Précédent</button>
+                    <button class="btn-primary" onclick="nextPage(7)">Suivant →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Vérification -->
+        <div id="page7" class="page">
+            <div class="progress-bar">
+                <div class="step completed">
+                    <div class="step-icon">ℹ️</div>
+                    <div class="step-label">Informations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">👤</div>
+                    <div class="step-label">HRP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">🎮</div>
+                    <div class="step-label">RP</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">💼</div>
+                    <div class="step-label">Profession</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">❤️</div>
+                    <div class="step-label">Motivations</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-icon">📄</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">✓</div>
+                    <div class="step-label">Vérification</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-icon success">✓</div>
+                <h2>Vérification</h2>
+                <p class="subtitle">Vérifiez vos informations avant de soumettre</p>
+
+                <div id="verificationSummary" class="summary-box">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-secondary" onclick="prevPage(6)">← Précédent</button>
+                    <button class="btn-success" onclick="submitForm()">✓ Envoyer ma candidature</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page de confirmation -->
+        <div id="confirmationPage" class="page">
+            <div class="card">
+                <div class="card-icon success large">✓</div>
+                <h2>Candidature envoyée !</h2>
+                <p class="subtitle">Votre candidature a été soumise avec succès</p>
+                
+                <div class="confirmation-message">
+                    <p>Merci pour votre candidature au Los Santos Police Department.</p>
+                    <p>Une réponse vous sera donnée sous 48 heures maximum.</p>
+                    <p>Seules les candidatures les plus pertinentes et sérieuses seront retenues.</p>
+                </div>
+
+                <button class="btn-primary" onclick="window.location.reload()">Retour à l'accueil</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

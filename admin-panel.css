@@ -225,9 +225,11 @@ body {
 .info-item {
     display: flex;
     justify-content: space-between;
-    padding: 8px 0;
+    align-items: flex-start;
+    padding: 10px 0;
     border-bottom: 1px solid rgba(59, 130, 246, 0.1);
     font-size: 14px;
+    gap: 16px;
 }
 
 .info-item:last-child {
@@ -236,11 +238,16 @@ body {
 
 .info-label {
     color: #94a3b8;
+    flex-shrink: 0;
+    min-width: 120px;
 }
 
 .info-value {
     color: #e8eaed;
     font-weight: 500;
+    text-align: right;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Section motivations */
@@ -252,11 +259,14 @@ body {
     background: rgba(15, 23, 42, 0.6);
     border: 1px solid rgba(59, 130, 246, 0.2);
     border-radius: 8px;
-    padding: 12px;
+    padding: 16px;
     color: #cbd5e1;
-    line-height: 1.6;
-    margin-bottom: 12px;
+    line-height: 1.8;
+    margin-bottom: 16px;
     font-size: 14px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 /* Section documents */
@@ -387,8 +397,11 @@ body {
 
 .modal-image {
     max-width: 100%;
+    height: auto;
     border-radius: 8px;
     border: 1px solid rgba(59, 130, 246, 0.3);
+    display: block;
+    margin: 0 auto;
 }
 
 /* Responsive */

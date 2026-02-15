@@ -2,11 +2,6 @@
 let currentUser = null;
 let formData = {};
 
-// Configuration Discord OAuth (à remplacer par vos vraies valeurs)
-const DISCORD_CLIENT_ID = 'YOUR_DISCORD_CLIENT_ID';
-const DISCORD_REDIRECT_URI = window.location.origin;
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u'; // Pour recevoir les candidatures
-
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
@@ -15,22 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Vérifier l'authentification
 function checkAuth() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    
-    if (code) {
-        // Échanger le code contre un token (simulation)
-        // Dans un vrai projet, cela se ferait côté serveur
-        simulateDiscordAuth(code);
+    const storedUser = localStorage.getItem('discordUser');
+    if (storedUser) {
+        currentUser = JSON.parse(storedUser);
+        showPage('page1');
+        populateUserInfo();
     } else {
-        const storedUser = localStorage.getItem('discordUser');
-        if (storedUser) {
-            currentUser = JSON.parse(storedUser);
-            showPage('page1');
-            populateUserInfo();
-        } else {
-            showPage('loginPage');
-        }
+        showPage('loginPage');
     }
 }
 
@@ -47,10 +33,7 @@ if (discordForm) {
             return;
         }
         
-        // Créer un ID unique basé sur le pseudo
-        const generatedId = 'user_' + Date.now();
-        
-        simulateDiscordAuth(pseudo, generatedId);
+        simulateDiscordAuth(pseudo);
     });
 }
 
@@ -59,10 +42,9 @@ document.getElementById('adminAccessBtn')?.addEventListener('click', () => {
     window.location.href = 'admin-login.html';
 });
 
-function simulateDiscordAuth(username = 'Utilisateur', userId = null) {
-    // Simulation d'une connexion Discord
+function simulateDiscordAuth(username) {
     currentUser = {
-        id: userId || 'user_' + Date.now(),
+        id: 'user_' + Date.now(),
         username: username,
         discriminator: '0',
         avatar: null
@@ -83,7 +65,6 @@ function logout() {
 // Remplir les infos utilisateur
 function populateUserInfo() {
     if (currentUser) {
-        document.getElementById('discordId').value = currentUser.id;
         document.getElementById('discordPseudo').value = currentUser.username;
     }
 }
@@ -110,10 +91,6 @@ function setupEventListeners() {
     // Compteurs de caractères pour les motivations
     setupCharCounter('motivation1', 150);
     setupCharCounter('motivation2', 150);
-    
-    // Upload de fichiers
-    setupFileUpload('carteIdentite', 'carteIdentitePreview');
-    setupFileUpload('permisConduire', 'permisConduirePreview');
 }
 
 // Compteur de caractères
@@ -134,105 +111,6 @@ function setupCharCounter(textareaId, minLength) {
             counter.classList.add('error');
         }
     });
-}
-
-// Gestion des fichiers
-function setupFileUpload(inputId, previewId) {
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
-    const uploadBox = input?.closest('.upload-box');
-    
-    if (!input || !preview || !uploadBox) return;
-
-    // Upload par sélection de fichier
-    input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            handleFile(file, inputId, preview);
-        }
-    });
-
-    // Drag & Drop
-    uploadBox.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadBox.style.borderColor = '#3b82f6';
-        uploadBox.style.background = 'rgba(59, 130, 246, 0.1)';
-    });
-
-    uploadBox.addEventListener('dragleave', () => {
-        uploadBox.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-        uploadBox.style.background = 'rgba(15, 23, 42, 0.6)';
-    });
-
-    uploadBox.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadBox.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-        uploadBox.style.background = 'rgba(15, 23, 42, 0.6)';
-        
-        const file = e.dataTransfer.files[0];
-        if (file) {
-            handleFile(file, inputId, preview);
-        }
-    });
-
-    // Paste (Ctrl+V)
-    uploadBox.addEventListener('click', () => {
-        uploadBox.setAttribute('tabindex', '0');
-        uploadBox.focus();
-    });
-
-    uploadBox.addEventListener('paste', (e) => {
-        const items = e.clipboardData.items;
-        for (let item of items) {
-            if (item.type.indexOf('image') !== -1) {
-                const file = item.getAsFile();
-                handleFile(file, inputId, preview);
-            }
-        }
-    });
-}
-
-function handleFile(file, inputId, preview) {
-    console.log('Upload fichier:', file.name, 'Type:', file.type, 'Taille:', file.size);
-    
-    // Vérifier le type
-    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-        alert('Format de fichier invalide. Utilisez JPG, PNG ou WebP.');
-        return;
-    }
-
-    // Vérifier la taille (5MB max)
-    if (file.size > 5 * 1024 * 1024) {
-        alert('Le fichier est trop volumineux. Taille maximale : 5MB.');
-        return;
-    }
-
-    // Lire le fichier
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const imageData = e.target.result;
-        
-        // Vérifier que les données sont valides
-        if (!imageData || !imageData.startsWith('data:image')) {
-            console.error('Données image invalides');
-            alert('Erreur lors de la lecture du fichier');
-            return;
-        }
-        
-        formData[inputId] = imageData;
-        console.log(`Image ${inputId} sauvegardée, taille:`, imageData.length, 'caractères');
-        
-        preview.innerHTML = `✓ ${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
-        preview.style.color = '#10b981';
-    };
-    
-    reader.onerror = (error) => {
-        console.error('Erreur de lecture du fichier:', error);
-        alert('Erreur lors de la lecture du fichier');
-    };
-    
-    reader.readAsDataURL(file);
 }
 
 // Navigation entre les pages
@@ -257,7 +135,7 @@ function nextPage(pageNumber) {
     showPage(`page${pageNumber}`);
     
     // Si c'est la page de vérification, afficher le résumé
-    if (pageNumber === 7) {
+    if (pageNumber === 6) {
         displaySummary();
     }
 }
@@ -321,18 +199,6 @@ function validateCurrentPage(pageNumber) {
                 return false;
             }
             break;
-            
-        case 6:
-            if (!formData['carteIdentite']) {
-                alert('Veuillez uploader votre carte d\'identité');
-                return false;
-            }
-            
-            if (!formData['permisConduire']) {
-                alert('Veuillez uploader votre permis de conduire');
-                return false;
-            }
-            break;
     }
     
     return true;
@@ -368,7 +234,7 @@ function displaySummary() {
                 <strong>${formData.age || 'Non renseigné'} ans</strong>
             </div>
             <div class="summary-item">
-                <span>Discord:</span>
+                <span>Pseudo Discord:</span>
                 <strong>${formData.discordPseudo || 'Non renseigné'}</strong>
             </div>
         </div>
@@ -420,18 +286,6 @@ function displaySummary() {
                 <strong>${formData.ancienAgent || 'Non renseigné'}</strong>
             </div>
         </div>
-
-        <div class="summary-section">
-            <h3>📄 Documents</h3>
-            <div class="summary-item">
-                <span>Carte d'identité:</span>
-                <strong>${formData.carteIdentite ? '✓ Uploadée' : '✗ Manquante'}</strong>
-            </div>
-            <div class="summary-item">
-                <span>Permis de conduire:</span>
-                <strong>${formData.permisConduire ? '✓ Uploadé' : '✗ Manquant'}</strong>
-            </div>
-        </div>
     `;
     
     summary.innerHTML = html;
@@ -440,7 +294,7 @@ function displaySummary() {
 // Soumettre le formulaire
 async function submitForm() {
     // Valider une dernière fois
-    if (!validateCurrentPage(6)) {
+    if (!validateCurrentPage(5)) {
         return;
     }
     
@@ -454,11 +308,8 @@ async function submitForm() {
         formData: formData
     };
     
-    // Sauvegarder localement (pour le panel admin)
+    // Sauvegarder localement
     saveSubmission(submission);
-    
-    // Envoyer au webhook Discord (optionnel)
-    await sendToDiscord(submission);
     
     // Afficher la confirmation
     showPage('confirmationPage');
@@ -466,78 +317,7 @@ async function submitForm() {
 
 // Sauvegarder la candidature localement
 function saveSubmission(submission) {
-    console.log('=== SAUVEGARDE CANDIDATURE ===');
-    console.log('Carte identité présente:', !!submission.formData.carteIdentite);
-    console.log('Permis présent:', !!submission.formData.permisConduire);
-    
-    if (submission.formData.carteIdentite) {
-        console.log('Taille carte identité:', submission.formData.carteIdentite.length, 'caractères');
-    }
-    if (submission.formData.permisConduire) {
-        console.log('Taille permis:', submission.formData.permisConduire.length, 'caractères');
-    }
-    
     let submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
     submissions.push(submission);
-    
-    try {
-        localStorage.setItem('submissions', JSON.stringify(submissions));
-        console.log('✅ Candidature sauvegardée avec succès');
-    } catch (error) {
-        console.error('❌ Erreur de sauvegarde:', error);
-        alert('Erreur: Les fichiers sont peut-être trop volumineux pour être sauvegardés localement.');
-    }
-}
-
-// Envoyer au webhook Discord
-async function sendToDiscord(submission) {
-    // Si vous avez configuré un webhook Discord, décommentez ce code
-    /*
-    const embed = {
-        title: "🚨 Nouvelle Candidature LSPD",
-        color: 3447003,
-        fields: [
-            {
-                name: "👤 Candidat",
-                value: `${submission.formData.prenomRP} ${submission.formData.nomRP}`,
-                inline: true
-            },
-            {
-                name: "📱 Discord",
-                value: submission.formData.discordPseudo,
-                inline: true
-            },
-            {
-                name: "🎂 Âge",
-                value: `${submission.formData.age} ans`,
-                inline: true
-            },
-            {
-                name: "💼 Emploi actuel",
-                value: submission.formData.emploi,
-                inline: true
-            },
-            {
-                name: "📅 Date de soumission",
-                value: new Date(submission.timestamp).toLocaleString('fr-FR'),
-                inline: false
-            }
-        ],
-        timestamp: submission.timestamp
-    };
-
-    try {
-        await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                embeds: [embed]
-            })
-        });
-    } catch (error) {
-        console.error('Erreur lors de l\'envoi au webhook:', error);
-    }
-    */
+    localStorage.setItem('submissions', JSON.stringify(submissions));
 }

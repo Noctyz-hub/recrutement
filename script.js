@@ -2,6 +2,11 @@
 let currentUser = null;
 let formData = {};
 
+// ⚙️ CONFIGURATION WEBHOOK DISCORD
+// Remplace cette URL par ton webhook Discord
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u';
+// Pour obtenir un webhook : Paramètres du salon Discord → Intégrations → Webhooks → Nouveau webhook
+
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
@@ -311,6 +316,9 @@ async function submitForm() {
     // Sauvegarder localement
     saveSubmission(submission);
     
+    // Envoyer au webhook Discord
+    await sendToDiscordWebhook(submission);
+    
     // Afficher la confirmation
     showPage('confirmationPage');
 }
@@ -320,4 +328,94 @@ function saveSubmission(submission) {
     let submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
     submissions.push(submission);
     localStorage.setItem('submissions', JSON.stringify(submissions));
+}
+
+// 📤 ENVOYER AU WEBHOOK DISCORD
+async function sendToDiscordWebhook(submission) {
+    // Si le webhook n'est pas configuré, on ignore
+    if (!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL === 'VOTRE_WEBHOOK_URL_ICI') {
+        console.log('⚠️ Webhook Discord non configuré');
+        return;
+    }
+    
+    const data = submission.formData;
+    
+    // Créer l'embed Discord
+    const embed = {
+        title: "🚨 NOUVELLE CANDIDATURE LSPD",
+        color: 3447003, // Bleu
+        thumbnail: {
+            url: "https://i.imgur.com/AfFp7pu.png" // Logo LSPD (optionnel)
+        },
+        fields: [
+            {
+                name: "👤 Candidat",
+                value: `**${data.prenomRP} ${data.nomRP}**`,
+                inline: false
+            },
+            {
+                name: "📱 Discord",
+                value: data.discordPseudo || 'Non renseigné',
+                inline: true
+            },
+            {
+                name: "🎂 Âge",
+                value: `${data.age} ans`,
+                inline: true
+            },
+            {
+                name: "📍 Informations RP",
+                value: `**Nationalité:** ${data.nationalite || 'N/A'}\n**Lieu de naissance:** ${data.lieuNaissance || 'N/A'}\n**Date de naissance RP:** ${data.dateNaissanceRP || 'N/A'}`,
+                inline: false
+            },
+            {
+                name: "💼 Emploi actuel",
+                value: data.emploi || 'Non renseigné',
+                inline: true
+            },
+            {
+                name: "👮 Ancien agent",
+                value: data.ancienAgent || 'Non renseigné',
+                inline: true
+            },
+            {
+                name: "❤️ Pourquoi le LSPD ?",
+                value: data.motivation1 ? (data.motivation1.substring(0, 1000) + (data.motivation1.length > 1000 ? '...' : '')) : 'Non renseigné',
+                inline: false
+            },
+            {
+                name: "⭐ Pourquoi vous ?",
+                value: data.motivation2 ? (data.motivation2.substring(0, 1000) + (data.motivation2.length > 1000 ? '...' : '')) : 'Non renseigné',
+                inline: false
+            }
+        ],
+        footer: {
+            text: "Système de Recrutement LSPD"
+        },
+        timestamp: submission.timestamp
+    };
+    
+    // Envoyer au webhook
+    try {
+        const response = await fetch(DISCORD_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: "LSPD Recrutement",
+                avatar_url: "https://i.imgur.com/AfFp7pu.png", // Logo LSPD (optionnel)
+                embeds: [embed]
+            })
+        });
+        
+        if (response.ok) {
+            console.log('✅ Candidature envoyée au Discord avec succès');
+        } else {
+            console.error('❌ Erreur lors de l\'envoi au Discord:', response.status);
+        }
+    } catch (error) {
+        console.error('❌ Erreur lors de l\'envoi au Discord:', error);
+        // On continue quand même, la candidature est sauvegardée localement
+    }
 }

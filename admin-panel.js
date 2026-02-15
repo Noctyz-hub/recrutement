@@ -313,8 +313,25 @@ function filterSubmissions() {
 // ========================================
 
 function showImage(imageData, title) {
+    console.log('Affichage image:', title);
+    console.log('Data length:', imageData ? imageData.length : 0);
+    
+    if (!imageData || imageData === 'undefined') {
+        alert('Image non disponible');
+        return;
+    }
+    
     document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalImage').src = imageData;
+    const imgElement = document.getElementById('modalImage');
+    imgElement.src = imageData;
+    
+    // Gérer les erreurs de chargement
+    imgElement.onerror = function() {
+        console.error('Erreur de chargement de l\'image');
+        alert('Impossible de charger l\'image. Le fichier est peut-être corrompu.');
+        closeModal();
+    };
+    
     document.getElementById('imageModal').classList.add('active');
 }
 

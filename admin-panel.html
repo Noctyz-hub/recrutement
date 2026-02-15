@@ -3,70 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - LSPD Recrutements</title>
-    <link rel="stylesheet" href="admin-panel.css">
+    <title>Connexion Admin - LSPD</title>
+    <link rel="stylesheet" href="admin-login.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>
-                <span>🛡️</span>
-                Panel Admin - Recrutements LSPD
-            </h1>
-            <div class="header-buttons">
-                <button class="btn" id="logoutBtn">🚪 Déconnexion</button>
-                <button class="btn btn-danger" id="clearAllBtn">🗑️ Tout supprimer</button>
-            </div>
-        </div>
+        <div class="login-card">
+            <div class="shield-icon">🛡️</div>
+            <h1>Panel Admin - LSPD</h1>
+            <p class="subtitle">Connexion administrateur</p>
 
-        <!-- Statistiques -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-value" id="totalSubmissions">0</div>
-                <div class="stat-label">Total des candidatures</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-value" id="todaySubmissions">0</div>
-                <div class="stat-label">Aujourd'hui</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">⏰</div>
-                <div class="stat-value" id="recentSubmissions">0</div>
-                <div class="stat-label">Dernières 24h</div>
-            </div>
-        </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="form-input" 
+                        placeholder="Entrez le mot de passe"
+                        autocomplete="off"
+                    >
+                </div>
 
-        <!-- Filtres -->
-        <div class="filters">
-            <input 
-                type="text" 
-                class="filter-input" 
-                id="searchInput" 
-                placeholder="🔍 Rechercher par nom, prénom, Discord..."
-            >
-            <button class="btn" id="refreshBtn">🔄 Actualiser</button>
-        </div>
+                <div id="errorMessage" class="error-message"></div>
 
-        <!-- Container des candidatures -->
-        <div id="submissionsContainer" class="submissions-grid">
-            <!-- Les candidatures seront chargées ici par JavaScript -->
+                <button type="submit" class="btn-login">
+                    🔓 Se connecter
+                </button>
+            </form>
+
+            <div class="info-box">
+                <p>⚠️ Accès réservé aux administrateurs du LSPD</p>
+            </div>
         </div>
     </div>
 
-    <!-- Modal pour afficher les images -->
-    <div id="imageModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Document</h2>
-                <button class="modal-close" id="modalCloseBtn">×</button>
-            </div>
-            <img id="modalImage" class="modal-image" src="" alt="Document">
-        </div>
-    </div>
-
-    <script src="admin-panel.js"></script>
+    <script src="admin-login.js"></script>
 </body>
 </html>

@@ -3,41 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Admin - LSPD</title>
-    <link rel="stylesheet" href="admin-login.css">
+    <title>Panel Admin - LSPD Recrutements</title>
+    <link rel="stylesheet" href="css/admin-panel.css">
 </head>
 <body>
     <div class="container">
-        <div class="login-card">
-            <div class="shield-icon">🛡️</div>
-            <h1>Panel Admin - LSPD</h1>
-            <p class="subtitle">Connexion administrateur</p>
-
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="password">Mot de passe</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        class="form-input" 
-                        placeholder="Entrez le mot de passe"
-                        autocomplete="off"
-                    >
-                </div>
-
-                <div id="errorMessage" class="error-message"></div>
-
-                <button type="submit" class="btn-login">
-                    🔓 Se connecter
-                </button>
-            </form>
-
-            <div class="info-box">
-                <p>⚠️ Accès réservé aux administrateurs du LSPD</p>
+        <div class="header">
+            <h1>
+                <span>🛡️</span>
+                Panel Admin - Recrutements LSPD
+            </h1>
+            <div class="header-buttons">
+                <button class="btn" id="logoutBtn">🚪 Déconnexion</button>
+                <button class="btn btn-danger" id="clearAllBtn">🗑️ Tout supprimer</button>
             </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="totalSubmissions">0</div>
+                <div class="stat-label">Total des candidatures</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value" id="todaySubmissions">0</div>
+                <div class="stat-label">Aujourd'hui</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏰</div>
+                <div class="stat-value" id="recentSubmissions">0</div>
+                <div class="stat-label">Dernières 24h</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <input 
+                type="text" 
+                class="filter-input" 
+                id="searchInput" 
+                placeholder="🔍 Rechercher par nom, prénom, Discord..."
+            >
+            <button class="btn" id="refreshBtn">🔄 Actualiser</button>
+        </div>
+
+        <div id="submissionsContainer" class="submissions-grid">
+            <!-- Les candidatures seront chargées ici -->
         </div>
     </div>
 
-    <script src="admin-login.js"></script>
+    <script src="js/admin-panel.js"></script>
 </body>
 </html>

@@ -65,10 +65,6 @@
                     <div class="step-label">Motivations</div>
                 </div>
                 <div class="step">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step">
                     <div class="step-icon">✓</div>
                     <div class="step-label">Vérification</div>
                 </div>
@@ -128,10 +124,6 @@
                     <div class="step-label">Motivations</div>
                 </div>
                 <div class="step">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step">
                     <div class="step-icon">✓</div>
                     <div class="step-label">Vérification</div>
                 </div>
@@ -152,16 +144,9 @@
                     <input type="number" id="age" class="form-input" readonly>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Identifiant Discord</label>
-                        <input type="text" id="discordId" class="form-input" readonly>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Pseudo Discord</label>
-                        <input type="text" id="discordPseudo" class="form-input" readonly>
-                    </div>
+                <div class="form-group">
+                    <label>Pseudo Discord</label>
+                    <input type="text" id="discordPseudo" class="form-input" readonly>
                 </div>
 
                 <div class="nav-buttons">
@@ -193,10 +178,6 @@
                 <div class="step">
                     <div class="step-icon">❤️</div>
                     <div class="step-label">Motivations</div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
                 </div>
                 <div class="step">
                     <div class="step-icon">✓</div>
@@ -301,10 +282,6 @@
                     <div class="step-label">Motivations</div>
                 </div>
                 <div class="step">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step">
                     <div class="step-icon">✓</div>
                     <div class="step-label">Vérification</div>
                 </div>
@@ -360,10 +337,6 @@
                     <div class="step-label">Motivations</div>
                 </div>
                 <div class="step">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step">
                     <div class="step-icon">✓</div>
                     <div class="step-label">Vérification</div>
                 </div>
@@ -417,7 +390,7 @@
             </div>
         </div>
 
-        <!-- Page 6: Documents -->
+        <!-- Page 6: Vérification -->
         <div id="page6" class="page">
             <div class="progress-bar">
                 <div class="step completed">
@@ -441,81 +414,6 @@
                     <div class="step-label">Motivations</div>
                 </div>
                 <div class="step active">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step">
-                    <div class="step-icon">✓</div>
-                    <div class="step-label">Vérification</div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-icon">📄</div>
-                <h2>Documents</h2>
-                <p class="subtitle">Uploadez vos documents officiels</p>
-
-                <div class="upload-grid">
-                    <div class="upload-box">
-                        <div class="upload-icon">🪪</div>
-                        <h3>Carte d'identité</h3>
-                        <input type="file" id="carteIdentite" accept=".jpg,.jpeg,.png,.webp" style="display:none">
-                        <label for="carteIdentite" class="btn-upload">📁 Parcourir les fichiers</label>
-                        <p class="upload-hint">Ou cliquez dans la zone et utilisez Ctrl+V pour coller</p>
-                        <div id="carteIdentitePreview" class="file-preview"></div>
-                    </div>
-
-                    <div class="upload-box">
-                        <div class="upload-icon">🚗</div>
-                        <h3>Permis de conduire</h3>
-                        <input type="file" id="permisConduire" accept=".jpg,.jpeg,.png,.webp" style="display:none">
-                        <label for="permisConduire" class="btn-upload">📁 Parcourir les fichiers</label>
-                        <p class="upload-hint">Ou cliquez dans la zone et utilisez Ctrl+V pour coller</p>
-                        <div id="permisConduirePreview" class="file-preview"></div>
-                    </div>
-                </div>
-
-                <div class="alert info">
-                    <strong>ℹ️ Formats acceptés :</strong><br>
-                    JPG, PNG, WebP - Taille maximale : 5MB<br>
-                    Assurez-vous que vos documents sont lisibles et de bonne qualité
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn-secondary" onclick="prevPage(5)">← Précédent</button>
-                    <button class="btn-primary" onclick="nextPage(7)">Suivant →</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 7: Vérification -->
-        <div id="page7" class="page">
-            <div class="progress-bar">
-                <div class="step completed">
-                    <div class="step-icon">ℹ️</div>
-                    <div class="step-label">Informations</div>
-                </div>
-                <div class="step completed">
-                    <div class="step-icon">👤</div>
-                    <div class="step-label">HRP</div>
-                </div>
-                <div class="step completed">
-                    <div class="step-icon">🎮</div>
-                    <div class="step-label">RP</div>
-                </div>
-                <div class="step completed">
-                    <div class="step-icon">💼</div>
-                    <div class="step-label">Profession</div>
-                </div>
-                <div class="step completed">
-                    <div class="step-icon">❤️</div>
-                    <div class="step-label">Motivations</div>
-                </div>
-                <div class="step completed">
-                    <div class="step-icon">📄</div>
-                    <div class="step-label">Documents</div>
-                </div>
-                <div class="step active">
                     <div class="step-icon">✓</div>
                     <div class="step-label">Vérification</div>
                 </div>
@@ -531,7 +429,7 @@
                 </div>
 
                 <div class="nav-buttons">
-                    <button class="btn-secondary" onclick="prevPage(6)">← Précédent</button>
+                    <button class="btn-secondary" onclick="prevPage(5)">← Précédent</button>
                     <button class="btn-success" onclick="submitForm()">✓ Envoyer ma candidature</button>
                 </div>
             </div>

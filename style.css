@@ -393,11 +393,6 @@ body {
     cursor: pointer;
 }
 
-.radio-label input[type="radio"]:checked + span {
-    color: #3b82f6;
-    font-weight: 600;
-}
-
 .char-counter,
 .char-counter-small {
     font-size: 13px;

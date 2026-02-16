@@ -1,7 +1,7 @@
 let currentUser = null;
 let formData = {};
 
-const DISCORD_WEBHOOK_URL = 'VOTRE_WEBHOOK_URL_ICI';
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u';
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
@@ -307,7 +307,7 @@ async function sendToDiscordWebhook(submission) {
     const data = submission.formData;
     
     const embed = {
-        title: "🚨 NOUVELLE CANDIDATURE LSPD",
+        title: "🚨 NOUVELLE CANDIDATURE Police Nationale",
         color: 3447003,
         fields: [
             {
@@ -341,7 +341,7 @@ async function sendToDiscordWebhook(submission) {
                 inline: true
             },
             {
-                name: "❤️ Pourquoi le LSPD ?",
+                name: "❤️ Pourquoi la Police Nationale ?",
                 value: data.motivation1 ? (data.motivation1.substring(0, 1000) + (data.motivation1.length > 1000 ? '...' : '')) : 'Non renseigné',
                 inline: false
             },
@@ -352,7 +352,7 @@ async function sendToDiscordWebhook(submission) {
             }
         ],
         footer: {
-            text: "Système de Recrutement LSPD"
+            text: "Système de Recrutement Police Nationale"
         },
         timestamp: submission.timestamp
     };
@@ -364,7 +364,7 @@ async function sendToDiscordWebhook(submission) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: "LSPD Recrutement",
+                username: "Police Nationale Recrutement",
                 embeds: [embed]
             })
         });

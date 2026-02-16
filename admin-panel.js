@@ -1,6 +1,27 @@
 const SESSION_KEY = 'adminAuthenticated';
 const SESSION_EXPIRY = 'adminSessionExpiry';
 
+// 📢 URL du webhook pour les réponses (sera défini par script.js)
+let RESPONSE_WEBHOOK_URL = null;
+
+// Fonction pour définir l'URL du webhook (appelée depuis l'extérieur)
+function setResponseWebhookUrl(url) {
+    RESPONSE_WEBHOOK_URL = url;
+}
+
+// Essayer de récupérer depuis localStorage au démarrage
+document.addEventListener('DOMContentLoaded', () => {
+    if (!checkAuthentication()) {
+        return;
+    }
+    
+    // Récupérer le webhook depuis localStorage
+    RESPONSE_WEBHOOK_URL = localStorage.getItem('responseWebhookUrl');
+    
+    loadSubmissions();
+    setupEventListeners();
+});
+
 function checkAuthentication() {
     const isAuth = localStorage.getItem(SESSION_KEY) === 'true';
     const expiry = parseInt(localStorage.getItem(SESSION_EXPIRY) || '0');
@@ -18,15 +39,6 @@ function logout() {
     localStorage.removeItem(SESSION_EXPIRY);
     window.location.href = 'admin-login.html';
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (!checkAuthentication()) {
-        return;
-    }
-    
-    loadSubmissions();
-    setupEventListeners();
-});
 
 function setupEventListeners() {
     document.getElementById('logoutBtn').addEventListener('click', logout);
@@ -333,12 +345,9 @@ async function rejectSubmission(index) {
 // ========================================
 
 async function sendDiscordNotification(submission, status, reason) {
-    // Récupérer l'URL du webhook depuis le localStorage
-    // Vous devrez la configurer dans le script.js
-    const WEBHOOK_URL = localStorage.getItem('responseWebhookUrl') || 'VOTRE_WEBHOOK_REPONSE_URL_ICI';
-    
-    if (!WEBHOOK_URL || WEBHOOK_URL === 'VOTRE_WEBHOOK_REPONSE_URL_ICI') {
-        alert('⚠️ Le webhook de réponse n\'est pas configuré.\n\nVeuillez configurer DISCORD_RESPONSE_WEBHOOK_URL dans script.js');
+    // Vérifier si le webhook est configuré
+    if (!RESPONSE_WEBHOOK_URL || RESPONSE_WEBHOOK_URL === 'VOTRE_WEBHOOK_REPONSE_URL_ICI') {
+        alert('⚠️ Le webhook de réponse n\'est pas configuré.\n\nVeuillez configurer DISCORD_RESPONSE_WEBHOOK_URL dans script.js\n\nLigne 7 du fichier script.js');
         return;
     }
     
@@ -348,7 +357,7 @@ async function sendDiscordNotification(submission, status, reason) {
     // Créer l'embed Discord
     const embed = {
         title: isAccepted ? "✅ CANDIDATURE ACCEPTÉE" : "❌ CANDIDATURE REFUSÉE",
-        color: isAccepted ? 3066993 : 15158332, // Vert ou Rouge
+        color: isAccepted ? 3066993 : 15158332,
         description: isAccepted 
             ? `Félicitations **${data.prenomRP} ${data.nomRP}** ! Votre candidature au LSPD a été acceptée.`
             : `**${data.prenomRP} ${data.nomRP}**, votre candidature au LSPD a été refusée.`,
@@ -375,7 +384,7 @@ async function sendDiscordNotification(submission, status, reason) {
         timestamp: new Date().toISOString()
     };
     
-    // Si accepté, ajouter les prochaines étapes
+    // Ajouter les prochaines étapes selon le statut
     if (isAccepted) {
         embed.fields.push({
             name: "📋 Prochaines étapes",
@@ -391,13 +400,13 @@ async function sendDiscordNotification(submission, status, reason) {
     }
     
     try {
-        const response = await fetch(WEBHOOK_URL, {
+        const response = await fetch(RESPONSE_WEBHOOK_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                content: `<@${submission.user?.id}> ${data.discordPseudo}`,
+                content: `@${data.discordPseudo}`,
                 username: "Recrutement LSPD",
                 embeds: [embed]
             })

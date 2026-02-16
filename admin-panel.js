@@ -157,6 +157,8 @@ function generateSubmissionCard(submission, index) {
             </div>
 
             <div class="submission-actions">
+                <button class="btn btn-success btn-accept" data-index="${index}">✅ Accepter</button>
+                <button class="btn btn-danger btn-reject" data-index="${index}">❌ Refuser</button>
                 <button class="btn btn-export" data-index="${index}">📥 Exporter</button>
                 <button class="btn btn-danger btn-delete" data-index="${index}">🗑️ Supprimer</button>
             </div>
@@ -165,6 +167,23 @@ function generateSubmissionCard(submission, index) {
 }
 
 function attachSubmissionEvents() {
+    // Bouton Accepter
+    document.querySelectorAll('.btn-accept').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            acceptSubmission(index);
+        });
+    });
+    
+    // Bouton Refuser
+    document.querySelectorAll('.btn-reject').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            rejectSubmission(index);
+        });
+    });
+    
+    // Bouton Export
     document.querySelectorAll('.btn-export').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
@@ -172,6 +191,7 @@ function attachSubmissionEvents() {
         });
     });
     
+    // Bouton Delete
     document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', function() {
             const index = parseInt(this.dataset.index);
@@ -257,4 +277,143 @@ function formatTime(date) {
         hour: '2-digit',
         minute: '2-digit'
     });
+}
+
+// ========================================
+// ACCEPTER UNE CANDIDATURE
+// ========================================
+
+async function acceptSubmission(index) {
+    const reason = prompt('✅ Raison de l\'acceptation (optionnel) :\n\nExemple: "Profil excellent, motivations solides"');
+    
+    // Si l'utilisateur annule, on ne fait rien
+    if (reason === null) {
+        return;
+    }
+    
+    const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+    const submission = submissions[index];
+    
+    // Envoyer la notification Discord
+    await sendDiscordNotification(submission, 'accepted', reason || 'Aucune raison spécifiée');
+    
+    // Marquer comme traitée (optionnel - on peut supprimer après traitement)
+    if (confirm('Supprimer cette candidature du panel après notification ?')) {
+        deleteSubmission(index);
+    }
+}
+
+// ========================================
+// REFUSER UNE CANDIDATURE
+// ========================================
+
+async function rejectSubmission(index) {
+    const reason = prompt('❌ Raison du refus (obligatoire) :\n\nExemple: "Motivation peu convaincante, veuillez prendre le temps de développer un minimum vos réponses"');
+    
+    // La raison est obligatoire pour un refus
+    if (!reason || reason.trim() === '') {
+        alert('⚠️ Veuillez indiquer une raison pour le refus');
+        return;
+    }
+    
+    const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+    const submission = submissions[index];
+    
+    // Envoyer la notification Discord
+    await sendDiscordNotification(submission, 'rejected', reason);
+    
+    // Marquer comme traitée (optionnel - on peut supprimer après traitement)
+    if (confirm('Supprimer cette candidature du panel après notification ?')) {
+        deleteSubmission(index);
+    }
+}
+
+// ========================================
+// ENVOYER LA NOTIFICATION DISCORD
+// ========================================
+
+async function sendDiscordNotification(submission, status, reason) {
+    // Récupérer l'URL du webhook depuis le localStorage
+    // Vous devrez la configurer dans le script.js
+    const WEBHOOK_URL = localStorage.getItem('responseWebhookUrl') || 'VOTRE_WEBHOOK_REPONSE_URL_ICI';
+    
+    if (!WEBHOOK_URL || WEBHOOK_URL === 'VOTRE_WEBHOOK_REPONSE_URL_ICI') {
+        alert('⚠️ Le webhook de réponse n\'est pas configuré.\n\nVeuillez configurer DISCORD_RESPONSE_WEBHOOK_URL dans script.js');
+        return;
+    }
+    
+    const data = submission.formData;
+    const isAccepted = status === 'accepted';
+    
+    // Créer l'embed Discord
+    const embed = {
+        title: isAccepted ? "✅ CANDIDATURE ACCEPTÉE" : "❌ CANDIDATURE REFUSÉE",
+        color: isAccepted ? 3066993 : 15158332, // Vert ou Rouge
+        description: isAccepted 
+            ? `Félicitations **${data.prenomRP} ${data.nomRP}** ! Votre candidature au LSPD a été acceptée.`
+            : `**${data.prenomRP} ${data.nomRP}**, votre candidature au LSPD a été refusée.`,
+        fields: [
+            {
+                name: "👤 Candidat",
+                value: `${data.prenomRP} ${data.nomRP}`,
+                inline: true
+            },
+            {
+                name: "📱 Discord",
+                value: data.discordPseudo || 'Non renseigné',
+                inline: true
+            },
+            {
+                name: isAccepted ? "✅ Message" : "❌ Raison",
+                value: reason,
+                inline: false
+            }
+        ],
+        footer: {
+            text: "Los Santos Police Department"
+        },
+        timestamp: new Date().toISOString()
+    };
+    
+    // Si accepté, ajouter les prochaines étapes
+    if (isAccepted) {
+        embed.fields.push({
+            name: "📋 Prochaines étapes",
+            value: "• Rendez-vous dans 🏛️ Aucun accès\n• Un recruteur vous contactera pour la suite\n• Préparez-vous pour l'entretien final",
+            inline: false
+        });
+    } else {
+        embed.fields.push({
+            name: "🔄 Nouvelle candidature",
+            value: "Vous pouvez soumettre une nouvelle candidature après avoir pris en compte nos remarques.",
+            inline: false
+        });
+    }
+    
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: `<@${submission.user?.id}> ${data.discordPseudo}`,
+                username: "Recrutement LSPD",
+                embeds: [embed]
+            })
+        });
+        
+        if (response.ok) {
+            alert(isAccepted 
+                ? `✅ Notification d'acceptation envoyée à ${data.discordPseudo} !`
+                : `❌ Notification de refus envoyée à ${data.discordPseudo} !`
+            );
+        } else {
+            alert('❌ Erreur lors de l\'envoi de la notification Discord');
+            console.error('Erreur webhook:', response.status);
+        }
+    } catch (error) {
+        alert('❌ Erreur lors de l\'envoi de la notification Discord');
+        console.error('Erreur:', error);
+    }
 }

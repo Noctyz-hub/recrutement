@@ -2,10 +2,10 @@ let currentUser = null;
 let formData = {};
 
 // 📤 WEBHOOK POUR RECEVOIR LES CANDIDATURES
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u';
+const DISCORD_WEBHOOK_URL = 'VOTRE_WEBHOOK_URL_ICI';
 
 // 📢 WEBHOOK POUR ENVOYER LES RÉPONSES AUX CANDIDATS (accepté/refusé)
-const DISCORD_RESPONSE_WEBHOOK_URL = 'https://discord.com/api/webhooks/1472908401871687733/pHOKTagMGudrWc0xiFGYE4lvyTD7MdFb6GYDLxyHtI-ggvy2DqFhlImdAphDexZalXI9';
+const DISCORD_RESPONSE_WEBHOOK_URL = 'VOTRE_WEBHOOK_REPONSE_URL_ICI';
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();

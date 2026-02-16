@@ -1,11 +1,20 @@
 let currentUser = null;
 let formData = {};
 
-const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1472731945879470324/9OUMDVZRrrwHxCwV_bW4d4l50zXvKvAW9IGXjtYuJBX8ikdHI2gffqx0J3pmbJDaGX2u';
+// 📤 WEBHOOK POUR RECEVOIR LES CANDIDATURES
+const DISCORD_WEBHOOK_URL = 'VOTRE_WEBHOOK_URL_ICI';
+
+// 📢 WEBHOOK POUR ENVOYER LES RÉPONSES AUX CANDIDATS (accepté/refusé)
+const DISCORD_RESPONSE_WEBHOOK_URL = 'VOTRE_WEBHOOK_REPONSE_URL_ICI';
 
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
     setupEventListeners();
+    
+    // Sauvegarder l'URL du webhook de réponse dans localStorage pour l'admin panel
+    if (DISCORD_RESPONSE_WEBHOOK_URL && DISCORD_RESPONSE_WEBHOOK_URL !== 'VOTRE_WEBHOOK_REPONSE_URL_ICI') {
+        localStorage.setItem('responseWebhookUrl', DISCORD_RESPONSE_WEBHOOK_URL);
+    }
 });
 
 function checkAuth() {
@@ -307,7 +316,7 @@ async function sendToDiscordWebhook(submission) {
     const data = submission.formData;
     
     const embed = {
-        title: "🚨 NOUVELLE CANDIDATURE Police Nationale",
+        title: "🚨 NOUVELLE CANDIDATURE LSPD",
         color: 3447003,
         fields: [
             {
@@ -341,7 +350,7 @@ async function sendToDiscordWebhook(submission) {
                 inline: true
             },
             {
-                name: "❤️ Pourquoi la Police Nationale ?",
+                name: "❤️ Pourquoi le LSPD ?",
                 value: data.motivation1 ? (data.motivation1.substring(0, 1000) + (data.motivation1.length > 1000 ? '...' : '')) : 'Non renseigné',
                 inline: false
             },
@@ -352,7 +361,7 @@ async function sendToDiscordWebhook(submission) {
             }
         ],
         footer: {
-            text: "Système de Recrutement Police Nationale"
+            text: "Système de Recrutement LSPD"
         },
         timestamp: submission.timestamp
     };
@@ -364,7 +373,7 @@ async function sendToDiscordWebhook(submission) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username: "Police Nationale Recrutement",
+                username: "LSPD Recrutement",
                 embeds: [embed]
             })
         });

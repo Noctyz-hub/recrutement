@@ -127,6 +127,14 @@ body {
     background: #dc2626;
 }
 
+.btn-success {
+    background: #10b981;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
 .submissions-grid {
     display: grid;
     gap: 20px;
